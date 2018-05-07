@@ -9,98 +9,27 @@ var app = express();
 // process.env.PORT lets the port be set by Heroku
 var PORT = process.env.PORT || 8080;
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + "/public"));
 
 // Sets up the Express app to handle data parsing
-app.use(bodyParser.urlencoded({ 
-  extended: false 
+app.use(bodyParser.urlencoded({
+  extended: false
 }));
 
-app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 app.engine("handlebars", exphbs({
-  defaultLayout: 'main'
+  defaultLayout: "main"
 }));
+
 app.set("view engine", "handlebars");
 
-var routes = require('./controllers/routes.js');
-app.use('/', routes);
+// ***
+var routes = require("./controllers/burgers_controller.js");
+app.use("/", routes);
 
 app.use(bodyParser.json());
 
-// Serve index.handlebars to the root route.
-// app.get("/", function (req, res) {
-//   connection.query("SELECT * FROM burgers;", function (err, data) {
-//     if (err) {
-//       return res.status(500).end();
-//     }
-
-//     res.render("index", { burgers: data });
-//   });
-// });
-
-// app.get("/:id", function (req, res) {
-//   connection.query("SELECT * FROM burgers where id = ?", [req.params.id], function (err, data) {
-//     if (err) {
-//       return res.status(500).end();
-//     }
-
-//     console.log(data);
-//     res.render("single-quote", data[0]);
-//   });
-// });
-
-// // ????
-// app.post("/api/burgers", function (req, res) {
-//   connection.query("INSERT INTO quotes (burgerType) VALUES (?, ?)", [req.body.burgerType, req.body.burgerType], function (
-//     err,
-//     result
-//   ) {
-//     if (err) {
-//       // If an error occurred, send a generic server failure
-//       return res.status(500).end();
-//     }
-
-//     // Send back the ID of the new quote
-//     res.json({ id: result.insertId });
-//   });
-// });
-
-// app.delete("/api/burgers/:id", function (req, res) {
-//   connection.query("DELETE FROM burgers WHERE id = ?", [req.params.id], function (err, result) {
-//     if (err) {
-//       // If an error occurred, send a generic server failure
-//       return res.status(500).end();
-//     }
-//     else if (result.affectedRows === 0) {
-//       // If no rows were changed, then the ID must not exist, so 404
-//       return res.status(404).end();
-//     }
-//     res.status(200).end();
-
-//   });
-// });
-
-// // Update a quote by an id and then redirect to the root route.
-// app.put("/api/burgers/:id", function (req, res) {
-//   connection.query(
-//     "UPDATE burgers SET burgerType = ?, WHERE id = ?",
-//     [req.body.burgerType, req.body.burgers, req.params.id],
-//     function (err, result) {
-//       if (err) {
-//         // If an error occurred, send a generic server failure
-//         return res.status(500).end();
-//       }
-//       else if (result.changedRows === 0) {
-//         // If no rows were changed, then the ID must not exist, so 404
-//         return res.status(404).end();
-//       }
-//       res.status(200).end();
-
-//     }
-//   );
-// });
-
-// Start our server so that it can begin listening to client requests.
+// Start the server so that it can begin listening to client requests.
 app.listen(PORT, function () {
   // Log (server-side) when our server has started
   console.log("Server listening on: http://localhost:" + PORT);
